@@ -1,0 +1,53 @@
+prontera,126,166,5	script	CartasMVP	941,{
+
+mes "[TCG Trade]";
+mes "Yo intercambio cartas mvp por TCG";
+mes "Elije el equipo que desees intercambiar";
+menu	"Deviling Card  (2 TCG)",-," Ghostring Card (2 TCG)",M_2,"Maya Card (2 TCG)",M_3,"Golden ThiefBug Card (2 TCG)",M_4,"Moonlight Flower Card  (2 TCG)",M_5,"Maya Purple Card  (5 TCG)",M_6,"salir",M_EXIT;
+if(countitem(7227) <2) goto L_NotEnough;
+delitem 7227, 2;
+getitem 4174, 1;
+close;
+
+M_2:
+if(countitem(7227) <2) goto L_NotEnough;
+delitem 7227, 2;
+getitem 4047, 1;
+close;
+
+M_3:
+if(countitem(7227) <2) goto L_NotEnough;
+delitem 7227, 2;
+getitem 4146, 1;
+close;
+
+M_4:
+if(countitem(7227) <2) goto L_NotEnough;
+delitem 7227, 2;
+getitem 4128, 1;
+close;
+
+M_5:
+if(countitem(7227) <2) goto L_NotEnough;
+delitem 7227, 2;
+getitem 4131, 1;
+close;
+
+M_6:
+if(countitem(7227) <5) goto L_NotEnough;
+delitem 7227, 5;
+getitem 4198, 1;
+close;
+
+M_EXIT:
+ mes "[Gof]";
+ mes callfunc("F_Bye");
+ close;
+
+L_NotEnough:
+   mes ". . .Disculpa no tienes todas las TCG Card";
+   mes "NO te podre tradiar lo que deseas..";
+   mes "Regresa cuando tengas las TCG Card";
+   close;
+
+}

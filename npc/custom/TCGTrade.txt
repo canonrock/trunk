@@ -1,0 +1,45 @@
+prontera,141,180,4	script	TCG Trade	99,{
+mes .name$;
+mes "hola amigo,con mi servicio podras cambiar una TCG Card.su valor es de 300Millones,y Si Tienes una TCG que quieras cambiar por zeny soy el indicado para eso, entonces ¿Qué deseas hacer?";
+switch(select("Cambiar Zeny a "+getitemname(.item)+":Cambiar "+getitemname(.item)+" a Zeny:Salir")){
+        next;
+        case 1:
+        if(Zeny>=.zeny){
+                mes .name$;
+                Zeny=Zeny-.zeny;
+                getitem .item,1;
+                mes "Aquí tienes.";
+                close;
+        }else{
+                mes .name$;
+                mes "Lo siento, no cuentas con el Zeny necesario.";
+                close;
+        }
+        break;
+        case 2:
+        if(countitem(.item)>=1){
+        mes .name$;
+        delitem .item,1;
+        Zeny=Zeny+.zeny;
+        mes "Aquí tienes.";
+        close;
+        }else{
+                mes .name$;
+                mes "Lo siento, al parecer no cuentas con "+getitemname(.item)+".";
+                close;
+        }      
+        break;
+        case 3:
+        mes .name$;
+        mes "Nos vemos";
+        close;
+        break; 
+}
+ 
+ 
+OnInit:
+.name$="[TCG Trade]";//NOMBRE DEL NPC
+.zeny=300000000;//ZENY A CAMBIAR
+.item=7227;//ITEM ID DEL OBJETO A CAMBIAR
+end;
+}

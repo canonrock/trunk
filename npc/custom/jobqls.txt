@@ -1,0 +1,230 @@
+//////////////////////////////////
+//===== Script =======================================
+//= Atlas Script
+//===== By: ==================================================
+//= Atlas
+//===== Version: =====================================
+//= 1.0
+//===== Compatible =====================================
+//= Hercules - rAthena
+//===== Additional Comments: =================================
+//============================================================
+prontera,160,187,3	script	Lydia::jobmaster1	700,{
+cutin "lydia_a",2;
+set .@NpcName$,"[^8000FFLydia^000000]";
+
+function Job_Menu; function A_An;
+set .@NpcName$,"[^8000FFLydia^000000]";
+	
+	cutin "lydia_a",2;
+	mes .@NpcName$;
+	if (Class > 4049) {
+		mes "No hay mas jobs para ti.";
+		close2;
+			cutin "",255;
+			end;
+	}
+	if (checkfalcon() || checkcart() || checkriding() || ismounting()) {
+		mes "Por favor, remueve tu "+((checkfalcon())?"falcon":"")+((checkcart())?"cart":"")+((checkriding())?"Peco":"")+((ismounting())?"montura":"")+" antes de proceder.";
+		close2;
+			cutin "",255;
+			end;
+	}
+	if (.SkillPointCheck && SkillPoint) {
+		mes "Por favor, usa tus skill points antes de proceder.";
+		close2;
+			cutin "",255;
+			end;
+	}
+
+	set .@eac, eaclass();
+	set .@i, ((.ThirdClass)?roclass(.@eac&EAJ_UPPERMASK):Class);
+	if (.@i > 6 && .@i < 22) {
+		if (BaseLevel < .Rebirth[0] || JobLevel < .Rebirth[1]) {
+			set .@blvl, .Rebirth[0]-BaseLevel; set .@jlvl, .Rebirth[1]-JobLevel;
+			mes "Necesitas "+((.@blvl>0)?.@blvl+" niveles Base mas "+((.@jlvl>0)?"/ ":""):"")+((.@jlvl>0)?.@jlvl+" niveles Job mas ":"")+"para continuar.";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if (Class > 21) {
+			mes "Quiere cambiar a la tercera clase?";
+			next;
+			Job_Menu(roclass(.@eac|EAJL_THIRD));
+			close2;
+			cutin "",255;
+			end;
+		}
+		while(1) {
+			mes "Selecciona una opcion.";
+			next;
+			set .@i, select(" ~ ^0055FFRenacer^000000:"+((.ThirdClass)?" ~ ^FF0000Tercera Clase^000000":"")+": ~ ^777777Cancelar^000000");
+			if (.@i==3) {
+			cutin "",255; 
+			close;
+			} else {
+			mes .@NpcName$;
+			mes "Estas segur"+(Sex?"o":"a")+"?";
+			next;
+			Job_Menu(((.@i==1)?4001:roclass(.@eac|EAJL_THIRD)));
+			mes .@NpcName$;
+			}
+		}
+	}
+	set .@j1, roclass(.@eac|EAJL_2_1); set .@j2,roclass(.@eac|EAJL_2_2);
+	if ((.@eac&EAJ_UPPERMASK) == EAJ_SUPER_NOVICE) setarray .@exp[0],roclass(.@eac|EAJL_THIRD),99;
+	if (Class == Job_Ninja) setarray .@exp[0],.@j1,70;
+	if (.@exp[0] && .ThirdClass) {
+		if (BaseLevel < .Rebirth[0] || JobLevel < .@exp[1]) {
+			set .@blvl, .Rebirth[0]-BaseLevel; set .@jlvl, .@exp[1]-JobLevel;
+			mes "Necesitas "+((.@blvl>0)?.@blvl+" niveles Base mas "+((.@jlvl>0)?"/ ":""):"")+((.@jlvl>0)?.@jlvl+" niveles Job mas ":"")+"para continuar.";
+			close2;
+			cutin "",255;
+			end;
+		}
+		mes "Quieres cambiar a "+jobname(.@exp[0])+"?";
+		next;
+		Job_Menu(.@exp[0]);
+		close2;
+			cutin "",255;
+			end;
+	}
+	if (.@eac&EAJL_2)
+		if (.@eac&(EAJL_UPPER|EAJL_BABY) || roclass(.@eac|EAJL_UPPER) == -1) {
+			mes "No hay mas jobs para ti.";
+			close2;
+			cutin "",255;
+			end;
+		}
+	if ((.@eac&EAJ_BASEMASK) == EAJ_NOVICE) {
+		if (JobLevel < .JobReq[0])
+			mes "Se necesita un nivel Job de "+.JobReq[0]+" para poder cambiar a 1ra Clase.";
+		else if (Class == 4001 && .LastJob && lastJob) {
+			mes "Deseas cambiar de clase ahora?";
+			next;
+			Job_Menu(roclass((eaclass(lastJob)&EAJ_BASEMASK)|EAJL_UPPER));
+		} else switch(Class) {
+			case 0: Job_Menu(1,2,3,4,5,6,23,4046,24,25,4023);
+			case 4001: Job_Menu(4002,4003,4004,4005,4006,4007);
+			case 4023: Job_Menu(4024,4025,4026,4027,4028,4029,4045);
+			default: mes "Ha ocurrido un error."; break;
+		}
+		close2;
+			cutin "",255;
+			end;
+	}
+	if (roclass(.@eac|EAJL_2_1) == -1 || roclass(.@eac|EAJL_2_2) == -1)
+		mes "No hay mas jobs para ti.";
+	else if (!(.@eac&EAJL_2) && JobLevel < .JobReq[1])
+		mes "Se necesita un nivel Job de "+.JobReq[1]+" para poder cambiar a 2da Clase.";
+	else if (.LastJob && lastJob && (.@eac&EAJL_UPPER)) {
+		mes "Deseas cambiar de clase ahora?";
+		next;
+		Job_Menu(lastJob+4001);
+	} else
+		Job_Menu(.@j1,.@j2);
+	close2;
+			cutin "",255;
+			end;
+
+function Job_Menu {
+cutin "lydia_a",2;
+set .@NpcName$,"[^8000FFLydia^000000]";
+	while(1) {
+		if (getargcount() > 1) {
+			mes "Selecciona un job.";
+			set .@menu$,"";
+			for(set .@i,0; .@i<getargcount(); set .@i,.@i+1)
+				set .@menu$, .@menu$+" ~ "+jobname(getarg(.@i))+":";
+			set .@menu$, .@menu$+" ~ ^777777Cancelar^000000";
+			next;
+			set .@i, getarg(select(.@menu$)-1,0);
+			if (!.@i) close; 
+			if ((.@i == 23 || .@i == 4045) && BaseLevel < .SNovice) {
+				mes .@NpcName$;
+				mes "Se necesita un nivel Base de "+.SNovice+" para poder ser "+jobname(.@i)+".";
+				close2;
+			cutin "",255;
+			end;
+			}
+			mes .@NpcName$;
+			mes "Estas segur"+(Sex?"o":"a")+"?";
+			next;
+		} else
+			set .@i, getarg(0);
+		if (select(" ~ Cambiar a ^0055FF"+jobname(.@i)+"^000000: ~ ^777777"+((getargcount() > 1)?"Volver":"Cancelar")+"^000000") == 1) {
+			mes .@NpcName$;
+			mes "Ahora eres "+A_An(jobname(.@i))+"!";
+			if (.@i==4001 && .LastJob) {
+				set lastJob, Class;
+				announce "El jugador "+strcharinfo(0)+" ha renacido!",bc_blue;
+			}
+			nude;
+			jobchange .@i;
+			if (.@i==4062) getitem 6124,1;
+			if (.@i==4078) getitem 11022,1;
+			if (.@i==4001 || .@i==4023) resetlvl(1);
+			specialeffect2 338; specialeffect2 432;
+			if (.Platinum) callsub Get_Platinum;
+			close2;
+			cutin "",255;
+			end;
+		}
+		if (getargcount() == 1) return;
+		mes .@NpcName$;
+	}
+	cutin "",255;
+	end;
+}
+
+function A_An {
+cutin "lydia_a",2;
+set .@NpcName$,"[^8000FFLydia^000000]";
+	setarray .@A$[0],"a","e","i","o","u";
+	set .@B$, "_"+getarg(0);
+	for(set .@i,0; .@i<5; set .@i,.@i+1)
+		if (compare(.@B$,"_"+.@A$[.@i])) return "an "+getarg(0);
+	return "a "+getarg(0);
+}
+
+Get_Platinum:
+	skill 142,1,0;
+	switch(BaseClass) {
+		case 0: if (Class !=23) skill 143,1,0; break;
+		case 1: skill 144,1,0; skill 145,1,0; skill 146,1,0; break;
+		case 2: skill 157,1,0; break;
+		case 3: skill 147,1,0; skill 148,1,0; break;
+		case 4: skill 156,1,0; break;
+		case 5: skill 153,1,0; skill 154,1,0; skill 155,1,0; break;
+		case 6: skill 149,1,0; skill 150,1,0; skill 151,1,0; skill 152,1,0; break;
+		default: break;
+	}
+	switch(BaseJob) {
+		case 7: skill 1001,1,0; break;
+		case 8: skill 1014,1,0; break;
+		case 9: skill 1006,1,0; break;
+		case 10: skill 1012,1,0; skill 1013,1,0; break;
+		case 11: skill 1009,1,0; break;
+		case 12: skill 1003,1,0; skill 1004,1,0; break;
+		case 14: skill 1002,1,0; break;
+		case 15: skill 1015,1,0; skill 1016,1,0; break;
+		case 16: skill 1007,1,0; skill 1008,1,0; skill 1017,1,0; skill 1018,1,0; skill 1019,1,0; break;
+		case 17: skill 1005,1,0; break;
+		case 18: skill 238,1,0; break;
+		case 19: skill 1010,1,0; break;
+		case 20: skill 1011,1,0; break;
+		default: break;
+	}
+	return;
+
+OnInit:
+	setarray .Rebirth[0],99,50;	// Minimum base level, job level to rebirth OR change to third class
+	setarray .JobReq[0],10,40;	// Minimum job level to turn into 1st class, 2nd class
+	set .ThirdClass,0;		// Enable third classes? (1: yes / 0: no)
+	set .SNovice,45;		// Minimum base level to turn into Super Novice
+	set .LastJob,1;			// Enforce linear class changes? (1: yes / 0: no)
+	set .SkillPointCheck,1;		// Force player to use up all skill points? (1: yes / 0: no)
+	set .Platinum,1;		// Get platinum skills automatically? (1: yes / 0: no)
+	waitingroom "     Job Master",0;
+	end;
+}

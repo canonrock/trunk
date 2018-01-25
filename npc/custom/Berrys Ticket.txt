@@ -1,0 +1,35 @@
+prontera,147,173,4	script	Cambio Ticket	955,{
+set .Berry,607;// Reemplazar Id de berry
+set .Ticket,30002;//  Reemplazar  ID de Ticket
+mes "que deseas";
+switch(select("ticket por berrys:Berrys por ticket")){
+case 1:
+	mes "ok veamos";
+	mes "cuantos quieres cambiar??";
+	input .@tick;
+	if (.@tick >countitem(.Ticket)){
+		mes "no tienes suficientes. largo";
+		close;
+		}
+	mes "ok aqui tienes tus berrys";
+	next;
+	getitem .Berry,.@tick*200;
+	delitem .Ticket, .@tick;
+	close;
+	
+case 2:
+	mes "ok veamos";
+	mes "cuantos ticket quieres??, recuerda cada 200 berrys son 1 ticket";
+	input .@berry;
+	if (countitem(.Berry)<(.@berry*200)){
+	mes "no tienes suficientes. largo";	
+	close;
+	}
+	mes "ok permiteme";
+	next;
+	getitem .Ticket,.@berry;
+	delitem .Berry,.@berry*200;
+	close;
+	close;
+}// Fin switch
+}// Fin script

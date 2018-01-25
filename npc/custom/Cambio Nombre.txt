@@ -1,0 +1,98 @@
+//====================================================
+//====================================================
+// NPC Cambio de Nombre
+//====================================================
+// Version 1
+//====================================================
+// Autor: Links234
+//====================================================
+// Descripción:
+//
+// - NPC quest de cambio de nombre
+//
+// Items Necesarios:
+// 	250	Slick Paper
+// 	50	Sharp Paper
+// 	100	Sqid Ink
+// 	1	Pencil Case
+// 	1000000	Zenys
+//
+//====================================================
+// Importante:
+//
+// - SOLO FUNCIONA EN SERVIDORES 'SQL'
+//
+//====================================================
+// Licencia: GPL "http://www.gnu.org/licenses/gpl.txt"
+//====================================================
+
+prontera.gat,141,183,4	script	Cambio de Nombre	743,{
+	mes "Hola, yo soy un abogado de Midgard Kingdom. Estoy aca para cambiarle el nombre a la persona que quiera probarlo.";
+	mes "Queres hacer un cambio de nombre?";
+	next;
+
+	menu "Mas informacion",L_Mas_Info,"No, me quedo con el nombre que tengo, gracias.",-,"Si es lo que estaba buscando.",L_cambio;
+
+L_No:
+	mes "Gracias por el tiempo. Estare aqui si cambias de opinion.";
+	close;
+
+L_Mas_Info:
+	mes "Para poder cambiarte de nombre voy a necesitar:";
+	mes "^FF0000250^000000 Slick Paper";
+	mes "^FF000050^000000 Sharp Paper";
+	mes "^FF0000100^000000 Sqid Ink";
+	mes "^FF00001^000000 Pencil Case";
+	mes "y ^FF0000600.000.000^000000 de zenys";
+	close;
+
+L_cambio:
+	mes "Voy a ver si tenes todos los items...";
+	next;
+	mes "...";
+	next;
+	mes "...";
+	mes "...";
+	next;
+	mes "...";
+	mes "...";
+	mes "...";
+	next;
+
+	if (countitem(738)>=1 && countitem(1024)>=100 && countitem(7111)>=250 && countitem(7112)>=50 && Zeny>=1000000) {
+		mes "Bien hecho! Ahora pon en esta hoja tu nuevo nombre:";
+		next;
+
+		input @nuevonombre$;
+
+		mes "Estas seguro de cambiar tu nombre actual:";
+		mes "^00FF00" + strcharinfo(0) + "^000000";
+		mes "por:";
+		mes "^00FF00" + @nuevonombre$ + "^000000??";
+		mes "Si eliges SI se eliminaran los items y se te cambiara de nombre.";
+		next;
+
+		menu "No, eso me asusta.",L_No,"SI!! Hazlo de un vez!!",-;
+
+		delitem 738,1;
+		delitem 1024,100;
+		delitem 7111,250;
+		delitem 7112,50;
+		set zeny, zeny-600000000;
+
+		set @nb, query_sql("UPDATE `char` SET `name` = '" + @nuevonombre$ + "' WHERE `char`.`char_id` =" + getcharid(0, strcharinfo(0)) + " LIMIT 1", @name$);
+
+		if (@nb !=0) {
+			mes "Error al cambiar de nombre!! La funcion devolvio error: ^FF0000" + @nb + "^000000 Contacte con un GM.";
+			close;
+		}
+
+		announce "'" + strcharinfo(0) + "' ha cambiado su nombre por '" + @nuevonombre$ + "'",0;
+
+		mes "Bien hecho!! Para completar el cambio. Deberas reloguear.";
+		close;
+	} else {
+		mes "No tienes los elementos necesarios.";
+		goto L_Mas_Info;
+	}
+}

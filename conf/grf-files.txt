@@ -1,0 +1,14 @@
+//-----------------------------------------
+// GRF Files
+// Add as many as needed.
+//-----------------------------------------
+//grf: C:\Program Files\Gravity\RO\rdata.grf
+//grf: C:\Program Files\Gravity\RO\data.grf
+
+//-----------------------------------------
+// Data Directory
+// Use the base folder, not the data\ path.
+//-----------------------------------------
+//data_dir: C:\Program Files\Gravity\RO\
+grf: C:\Users\Alan\Desktop\las2 was\canonro\canon.grf
+grf: C:\Users\Alan\Desktop\las2 was\canonro\f_dst.grf

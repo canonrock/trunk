@@ -1,0 +1,115 @@
+// [==================================================]
+// [==================================================]
+// [                    Estilista                     ]
+// [==================================================]
+// [ Versión 3                                        ]
+// [==================================================]
+// [ Script original: Ivion                           ]
+// [==================================================]
+// [ Funciones:                                       ]
+// [                                                  ]
+// [ - Cambiar peinado.                               ]
+// [ - Cambiar color de pelo.                         ]
+// [ - Cambiar vestuario.                             ]
+// [==================================================]
+// [ 5 últimas actualizaciones:                       ]
+// [                                                  ]
+// [ v1: [Ivion]                                      ]
+// [ - Script Base.                                   ]
+// [                                                  ]
+// [ v2: [Ivion]                                      ]
+// [ - Añadidos comentarios al script.                ]
+// [                                                  ]
+// [ v3: [Ivion]                                      ]
+// [ - Reescritos los diálogos.                       ]
+// [ - Algunos cambios en l funcionamiento del script.]
+// [ - Nueva apariencia de los comentarios.           ]
+// [ - Cambiado sprite y posición del npc.            ]
+// [==================================================]
+// [==================================================]
+
+prontera.gat,164,172,4	script	Estilísta	82,{
+	emotion 40;
+	mes "^008888Estilista^000000";
+	mes "Una gruesa capa de polvo se ha acumulado sobre tu anticuada vestidura.";
+	mes "¡¿Estás preparado para un Cambio Radical?!";
+        next;
+	set .@a,select("Cambiar peinado.","Cambiar el color de pelo.","Cambiar vestuario.","^ff0000Salir^000000");
+	mes "^008888Estilista^000000";
+	if (.@a == 1) {
+		mes "Muy bien.";
+		mes "Veamos que estilo de peinado te sienta mejor.";
+		mes "Avísame cuando encuentres uno que te guste.";
+		next;
+		Lsty:
+		mes "^008888Estilista^000000";
+		mes "...";
+		sleep2 1500;
+		if (sty == 46) set sty,0;
+		set sty,(sty + 1);
+		setlook 1,sty;
+		specialeffect2 53;
+		mes "¿Cómo te ves?";
+               	next;
+		set .@b,select("Mejor probaré con otro...","¡Me gusta!");
+               	if (.@b == 1) {
+			emotion 16;
+			goto Lsty;
+		}
+	}
+	if (.@a == 2) {
+		mes "Muy bien.";
+		mes "Veamos que color de pelo te sienta mejor.";
+		mes "Avísame cuando encuentres uno que te guste.";
+		next;
+		Ldye:
+		mes "^008888Estilista^000000";
+		mes "...";
+		sleep2 1500;
+		if (dye == 23) set dye,(-1);
+		set dye,(dye + 1);
+		setlook 6,dye;
+		specialeffect2 53;
+		mes "¿Cómo te ves?";
+		next;
+		set .@b,select("Mejor probaré con otro...","¡Me gusta!");
+               	if (.@b == 1) {
+			emotion 16;
+			goto Ldye;
+		}
+	}
+	if (.@a == 3) {
+		mes "Muy bien.";
+		mes "Veamos que estilo de ropa te sienta mejor.";
+		mes "Avísame cuando encuentres uno que te guste.";
+		next;
+		Lclo:
+		mes "^008888Estilista^000000";
+		mes "...";
+		sleep2 1500;
+		if (clo == 500) set clo,(-1);
+		set clo,(clo + 1);
+		setlook 7,clo;
+		specialeffect2 53;
+		mes "¿Cómo te ves?";
+		next;
+		set .@b,select("Mejor probaré con otro...","¡Me gusta!");
+               	if (.@b == 1) {
+			emotion 16;
+			goto Lclo;
+		}
+	}
+	if (.@a == 4) {
+		emotion 9;
+		mes "Tu verás...";
+		close;
+	}
+	emotion 5;
+	mes "^008888Estilista^000000";
+	mes "¡¡Sí!!";
+	mes "¿Ves cómo no eres tan feo?";
+	close;
+}
+//==================================================
+//==================================================
+

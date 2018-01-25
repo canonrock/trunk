@@ -1,0 +1,174 @@
+//===== eAthena Script =======================================
+//= Stats Seller
+//===== By: ==================================================
+//= DeadChild
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: =====================================
+//= Any eAthena Version
+//===== Description: =========================================
+//= Stats Seller
+//===== Additional Comments: =================================
+//= Have fun with it ^^
+//================================================== ==========
+prontera.gat,155,193,4	script	STP/SKP Seller	86,{
+set @price, 400000;
+if (Class == 0) {
+mes "[STP/SKP Seller]";
+mes "Mis servicios no están disponibles para la clase Novice";
+close;
+}
+mes "[STP/SKP Seller]";
+mes "Hola Soy El Que Vende Los Stats :P";
+mes "El Costo Es De 400,000z Por Entregarte Tus Pts XD";
+mes "Cual Deseas Q Te Ponga?";
+next;
+menu "Status Point",ST,"Skill Point",SK,"No thanks I'm fine",EXIT;
+ST:
+mes "[STP/SKP Seller]";
+mes "What do you want to buy?";
+next;
+menu "Str",STR,"Agi",AGI,"Vit",VIT,"Int",INT,"Dex",DEX, "Luk",LUK;
+SK:
+mes "[STP/SKP Seller]";
+mes "So how many?";
+input @quantity;
+next;
+if (@quantity == 0) goto WT;
+if (zeny < (@quantity * @price)) goto NZ;
+mes "[STP/SKP Seller]";
+mes "Done";
+set zeny, zeny - (@quantity * @price);
+set SkillPoint, SkillPoint + @quantity;
+close;
+STR:
+mes "[STP/SKP Seller]";
+mes "Hold on...";
+next;
+mes "[STP/SKP Seller]";
+mes "So how many?";
+input @quantity;
+next;
+if (@quantity == 0) goto WT;
+if (@quantity > 999) goto TM;
+if (zeny < (@quantity * @price)) goto NZ;
+set zeny, zeny - (@quantity * @price);
+statusup2 bStr,@quantity;
+getmapxy(@mapname$,@mapx,@mapy,0,""+strcharinfo(0) +"");
+mes "[STP/SKP Seller]";
+mes "Done";
+next;
+warp ""+@mapname$+"",""+@mapx+"",""+@mapy+"";
+close;
+AGI:
+mes "[STP/SKP Seller]";
+mes "Hold on...";
+next;
+mes "[STP/SKP Seller]";
+mes "So how many?";
+input @quantity;
+next;
+if (@quantity == 0) goto WT;
+if (@quantity > 999) goto TM;
+if (zeny < (@quantity * @price)) goto NZ;
+set zeny, zeny - (@quantity * @price);
+statusup2 bAgi,@quantity;
+getmapxy(@mapname$,@mapx,@mapy,0,""+strcharinfo(0) +"");
+mes "[STP/SKP Seller]";
+mes "Done";
+next;
+warp ""+@mapname$+"",""+@mapx+"",""+@mapy+"";
+close;
+VIT:
+mes "[STP/SKP Seller]";
+mes "Hold on...";
+next;
+mes "[STP/SKP Seller]";
+mes "So how many?";
+input @quantity;
+next;
+if (@quantity == 0) goto WT;
+if (@quantity > 999) goto TM;
+if (zeny < (@quantity * @price)) goto NZ;
+set zeny, zeny - (@quantity * @price);
+statusup2 bVit,@quantity;
+getmapxy(@mapname$,@mapx,@mapy,0,""+strcharinfo(0) +"");
+mes "[STP/SKP Seller]";
+mes "Done";
+next;
+warp ""+@mapname$+"",""+@mapx+"",""+@mapy+"";
+close;
+INT:
+mes "[STP/SKP Seller]";
+mes "Hold on...";
+next;
+mes "[STP/SKP Seller]";
+mes "So how many?";
+input @quantity;
+next;
+if (@quantity == 0) goto WT;
+if (@quantity > 999) goto TM;
+if (zeny < (@quantity * @price)) goto NZ;
+set zeny, zeny - (@quantity * @price);
+statusup2 bInt,@quantity;
+getmapxy(@mapname$,@mapx,@mapy,0,""+strcharinfo(0) +"");
+mes "[STP/SKP Seller]";
+mes "Done";
+next;
+warp ""+@mapname$+"",""+@mapx+"",""+@mapy+"";
+close;
+DEX:
+mes "[STP/SKP Seller]";
+mes "Hold on...";
+next;
+mes "[STP/SKP Seller]";
+mes "So how many?";
+input @quantity;
+next;
+if (@quantity == 0) goto WT;
+if (@quantity > 999) goto TM;
+if (zeny < (@quantity * @price)) goto NZ;
+set zeny, zeny - (@quantity * @price);
+statusup2 bDex,@quantity;
+getmapxy(@mapname$,@mapx,@mapy,0,""+strcharinfo(0) +"");
+mes "[STP/SKP Seller]";
+mes "Done";
+next;
+warp ""+@mapname$+"",""+@mapx+"",""+@mapy+"";
+close;
+LUK:
+mes "[STP/SKP Seller]";
+mes "Hold on...";
+next;
+mes "[STP/SKP Seller]";
+mes "So how many?";
+input @quantity;
+next;
+if (@quantity == 0) goto WT;
+if (@quantity > 999) goto TM;
+if (zeny < (@quantity * @price)) goto NZ;
+set zeny, zeny - (@quantity * @price);
+statusup2 bLuk,@quantity;
+getmapxy(@mapname$,@mapx,@mapy,0,""+strcharinfo(0) +"");
+mes "[STP/SKP Seller]";
+mes "Done";
+next;
+warp ""+@mapname$+"",""+@mapx+"",""+@mapy+"";
+close;
+WT:
+mes "[STP/SKP Seller]";
+mes "Please don't waste my time";
+close;
+TM:
+mes "[STP/SKP Seller]";
+mes "Sorry but you can only get 999 Status Point";
+close;
+NZ:
+mes "[STP/SKP Seller]";
+mes "Sorry but you do not have enough zeny.";
+close;
+EXIT:
+mes "[STP/SKP Seller]";
+mes "Okay then...";
+close;
+}

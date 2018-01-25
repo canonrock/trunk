@@ -1,0 +1,7 @@
+function	script	Sample	{
+if( isequippedcnt( 4357,4359,4363,4441,4408,4419,4376,4451 ) > 1 ){
+message strcharinfo(0),"Tienes mas de dos cartas restringidas.";
+nude;
+}
+return;
+}
